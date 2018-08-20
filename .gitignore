@@ -4,6 +4,10 @@
 ehthumbs.db
 Icon?
 Thumbs.db
+.env
+importer/
+prishtina-contracts-importer
+angular-src
 
 # Node and related ecosystem
 # ==========================
@@ -13,11 +17,11 @@ node_modules/
 public/lib/
 app/tests/coverage/
 .bower-*/
-.idea/
+.idea/`
 coverage/
 .coveralls.yml
 package-lock.json
-angular-src/package-lock.json
+client/package-lock.json
 
 # MEAN.js app and assets
 # ======================

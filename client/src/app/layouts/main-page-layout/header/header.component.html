@@ -1,0 +1,100 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light" id="navbar-1" (window:resize)="onResize()">
+  <a class="navbar-brand" [routerLink]="['']">
+    <div *ngIf="this.translate.currentLang === 'sq'">
+      <img src="../../../../assets/images/kontratat-e-hapura-logo.png">
+    </div>
+    <div *ngIf="this.translate.currentLang === 'sr'">
+      <img src="../../../../assets/images/otvoreni-ugovori--logo.png">
+    </div>
+    <div *ngIf="this.translate.currentLang === 'en'">
+      <img src="../../../../assets/images/open-contracts---logo.png">
+    </div>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span>
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </span>
+  </button>
+
+  <div class="collapse navbar-collapse auto justify-content-between" id="mainNav">
+    <ul class="navbar-nav navbar-left">
+      <li *ngIf="width>991" id="home-nav" class="nav-item nav-items" (click)="clickHome()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" id="home" [routerLink]="['']">{{ 'navigation.home' | translate }}</a>
+      </li>
+      <li *ngIf="991>=width" id="home-nav" class="nav-item nav-items" (click)="clickHome()" data-toggle="collapse" data-target="#mainNav"
+        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" id="home" [routerLink]="['']">{{ 'navigation.home' | translate }}</a>
+      </li>
+      <li *ngIf="width>991" class="nav-item nav-items" (click)="clickDataSet()" class="data-set-link">
+        <a class="nav-link" (click)="scroll()">{{ 'navigation.dataset' | translate }}</a>
+      </li>
+      <li *ngIf="991>=width" data-toggle="collapse" (click)="clickDataSet()" data-target="#mainNav" class="nav-item nav-items"
+        class="data-set-link">
+        <a class="nav-link" (click)="scroll()">{{ 'navigation.dataset' | translate }}</a>
+      </li>
+      <li *ngIf="width>991" class="nav-item nav-items" (click)="clickNav()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" id="visualisations" [routerLink]="['/visualisations']">{{ 'navigation.visualizations' | translate }}</a>
+      </li>
+      <li *ngIf="991>=width" class="nav-item nav-items" (click)="clickNav()" data-toggle="collapse" data-target="#mainNav" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" id="visualisations" [routerLink]="['/visualisations']">{{ 'navigation.visualizations' | translate }}</a>
+      </li>
+      <li *ngIf="width>991" class="nav-item nav-items" (click)="clickNav()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/about-us']">{{ 'navigation.aboutUs' | translate }}</a>
+      </li>
+      <li *ngIf="991>=width" class="nav-item nav-items" (click)="clickNav()" data-toggle="collapse" data-target="#mainNav" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" [routerLink]="['/about-us']">{{ 'navigation.aboutUs' | translate }}</a>
+      </li>
+      <li *ngIf="width>991" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link open-businesses" href="http://biznesetehapura.com/sq" target="_blank" style="width: 192px;">{{ 'navigation.openBusinesses' | translate }}</a>
+      </li>
+      <li *ngIf="991>=width" class="nav-item" data-toggle="collapse" data-target="#mainNav" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link open-businesses" href="http://biznesetehapura.com/sq" target="_blank" style="width: 192px;">{{ 'navigation.openBusinesses' | translate }}</a>
+      </li>
+    </ul>
+    <div *ngIf="width>991">
+      <ul class="navbar-nav navbar-right text-dark">
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'sq'}" (click)="useLanguage('sq')">SHQ</a>
+        </li>
+        <span id="horizontalLine">|</span>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'sr'}" (click)="useLanguage('sr')">SRB</a>
+        </li>
+        <span id="horizontalLine">|</span>
+        <li class="nav-item">
+          <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'en'}" (click)="useLanguage('en')">ENG</a>
+        </li>
+        <li class="nav-item" *ngIf="currentUser !== null && width>991">
+          <a class="nav-link" [routerLink]="['/dashboard']" class="view-icon">
+            <i class="fa fa-user user-icon" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="991>=width">
+      <ul class="navbar-nav navbar-right dropdown">
+        <select id="lang-select" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown" (change)="useLanguage($event.target.value)"
+          role="button" aria-haspopup="true" aria-expanded="false">
+          <option class="nav-item" [value]="'sq'">
+            <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'sq'}">SHQ</a>
+          </option>
+          <option class="nav-item" [value]="'sr'">
+            <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'sr'}">SRB</a>
+          </option>
+          <option class="nav-item" [value]="'en'">
+            <a class="nav-link" [ngClass]="{'active': this.translate.currentLang === 'en'}">ENG</a>
+          </option>
+        </select>
+        <li class="nav-item" *ngIf="currentUser !== null">
+          <a class="nav-link" [routerLink]="['/dashboard']" class="view-icon">
+            <i class="fa fa-user user-icon" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

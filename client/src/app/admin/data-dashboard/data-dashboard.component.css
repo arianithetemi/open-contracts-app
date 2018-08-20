@@ -1,0 +1,108 @@
+.title {
+    font-size: 26px;
+    color: black;
+    padding-left: 25px;
+    padding-top: 25px;
+}
+.file-upload {
+    margin-left: 30px;
+    margin-right: 10px;
+}
+
+.my-col-2 {
+    padding-left: 0;
+}
+
+#name-area:disabled {
+    background-color: #fff
+}
+
+.error-msg {
+    color: red
+}
+.table {
+    width:100%;
+}
+#table-row {
+    text-align: center;
+    padding-left: 4%;
+    padding-right: 38px;
+    padding-bottom: 6%;
+    padding-top: 4%;
+}
+.img-fluid {
+    max-width: 100%;
+}
+.img-col {
+    width: 65px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.name {
+    font-weight: 500;
+    color: #39a6bd;
+    margin-bottom: 0;
+    font-size: 17px;
+}
+.information {
+    color: #868e96;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+.dataset-info {
+    padding-bottom: 0;
+    padding-top: 2%;
+    padding-right: 29%;
+}
+.form-i {
+    margin-bottom: 0;
+}
+.name-is-false {
+    font-weight: 500;
+    color: gray;
+    margin-bottom: 0;
+    font-size: 17px;
+}
+.activate-icon {
+    color: #868e96;
+    width: 17px;
+    padding-top: 47%;
+}
+.active-text {
+    margin-bottom: 0;
+    color: green;
+    font-size: 14px;
+    text-align: center;
+}
+.inactive-text {
+    width: 51px;
+    margin-bottom: 0;
+    color: red;
+    font-size: 14px;
+}
+.blank-div {
+    width: 17px;
+    padding-right: 15px;
+    padding-top: 47%;
+}
+.button-upload {
+    background-color: #39a6bd;
+    border-color: #39a6bd;
+}
+.title {
+    color: #39a6bd;
+}
+.dropdown {
+    padding-top: 5%;
+}
+#dropdown-menu-button {
+    background-color: #fff;
+    border: 1px solid #39a6bd;
+    color: #39a6bd;
+}
+
+.button-update {
+    background-color: #fff;
+    color: #39a6bd;
+    border-color: #39a6bd;
+}

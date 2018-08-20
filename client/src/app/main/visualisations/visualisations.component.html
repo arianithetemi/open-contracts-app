@@ -1,0 +1,65 @@
+<!-- Cover Image/Description-->
+<div class="col-md-12 header" id="bg-img">
+    <div class="row">
+        <div class="col-12 visualisation-header">
+            <div class="row">
+                <h1 id="title">{{ 'visualisations.title' | translate }}</h1>
+            </div>
+            <div class="row">
+                <h4 id="subtitle">{{ 'visualisations.subtitle' | translate }}</h4>
+            </div>
+            <div class="row" id="descriptions">
+                <div class="col-md-6" id="visualisation">
+                    <p class="visualisation-description">
+                        {{ 'visualisations.description' | translate }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 mt-10">
+            <app-contracts-count-by-years-chart></app-contracts-count-by-years-chart>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-top-ten-contractors-chart></app-top-ten-contractors-chart>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-contract-by-signing-date-publication-date-chart></app-contract-by-signing-date-publication-date-chart>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-directorates-chart></app-directorates-chart>
+        </div>
+
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-contract-by-year-with-predicted-value-total-amount></app-contract-by-year-with-predicted-value-total-amount>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-directorates-table></app-directorates-table>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-contracts-count-by-procurement-type-and-year></app-contracts-count-by-procurement-type-and-year>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-contracts-count-by-procurement-value-and-year></app-contracts-count-by-procurement-value-and-year>
+        </div>
+        <div class="col-12 mt-10">
+            <hr class="margins">
+            <app-contracts-count-by-procurement-procedure-and-year></app-contracts-count-by-procurement-procedure-and-year>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-5">
+    <div class="row">
+
+    </div>
+</div>

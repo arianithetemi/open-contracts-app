@@ -1,0 +1,312 @@
+<!-- Public contracts -->
+<div class="container-fluid">
+  <div class="row" id="public-contracts-row">
+    <div class="col-md-12 public-contracts">
+      <h1 class="text-center title">{{ 'datatable.title' | translate }}</h1>
+    </div>
+  </div>
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <p>
+      <strong>{{ 'datatable.searchContract' | translate }}:</strong> "{{ 'datatable.activityTitle' | translate }}", "{{ 'datatable.name' | translate }}", "{{ 'datatable.implementationDeadline'
+      | translate }}"!</p>
+    <p>
+      <strong>Zgjedhni datën: </strong>"{{ 'datatable.publicationDate' | translate }}", "{{ 'datatable.publicationDateOfGivenContract'
+      | translate }}", "{{ 'datatable.cancellationNoticeDate' | translate }}", "{{ 'datatable.signingDate' | translate }}"!</p>
+    <p>
+      <strong>Vlera:</strong> "{{ 'datatable.predictedValue' | translate }}", "{{ 'datatable.totalAmountOfContractsIncludingTaxes'
+      | translate }}" </p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 search text-center contracts-filter-form">
+      <form action="" class="form-inline form-group">
+        <input type="text" (keyup)="onType()" [(ngModel)]="search.string" name="string" class="form-control form-input" placeholder="{{ 'datatable.searchContract' | translate }}">
+        <select class="form-control form-select" (change)="onChange()" [(ngModel)]="search.directorate" name="directorate">
+          <option value="">Të gjitha</option>
+          <option *ngFor="let directorate of directorates" value="{{directorate.directorateName}}"> {{directorate.directorateName}}</option>
+        </select>
+        <input (input)="onDateInputChange($event)" (ngModelChange)="onDatePick($event)" bsDatepicker placeholder="MM/DD/YYYY" [bsConfig]="bsConfig" name="date" id="date"
+          class="form-control form-select" [(ngModel)]="search.date">
+        <input type="text" (keyup)="onType()" [(ngModel)]="search.value" name="value" class="form-control form-input" placeholder="{{ 'datatable.value' | translate }}">
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="table1">
+  <ngx-datatable #table class="bootstrap" columnMode="'force'" [rows]="rows" [headerHeight]="'auto'" [summaryRow]="false" [summaryPosition]="'bottom'"
+    [footerHeight]="50" [rowHeight]="'auto'" [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+    [limit]="page.size" [messages]="messages" [scrollbarH]="true" (page)='setPage($event)' [externalSorting]="true" (scroll)="onTableScroll($event)">
+    <ngx-datatable-column name="activity-title" prop="activityTitle">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('activityTitle1')">
+          <p class="column-header">{{ 'datatable.activityTitle' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('activityTitle1')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.activityTitle == ''">
+          -
+        </p>
+        <p *ngIf="row.activityTitle != ''">
+          {{ row.activityTitle }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="publication-date" prop="contract.publicationDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('publicationDate')">
+          <p class="column-header">{{ 'datatable.publicationDate' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('publicationDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.publicationDate == null">
+          -
+        </p>
+        <p *ngIf="row.contract.publicationDate != null">
+          {{ row.contract.publicationDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="number-of-companies" prop="noOfCompaniesWhoDownloadedTenderDoc">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('noOfCompaniesWhoDownloadedTenderDoc')">
+          <p class="column-header">{{ 'datatable.noOfCompaniesWhoDownloadedTenderDoc' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('noOfCompaniesWhoDownloadedTenderDoc')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.noOfCompaniesWhoDownloadedTenderDoc == null">
+          -
+        </p>
+        <p *ngIf="row.noOfCompaniesWhoDownloadedTenderDoc != null">
+          {{ row.noOfCompaniesWhoDownloadedTenderDoc }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="no-of-companies-who-submited" prop="noOfCompaniesWhoSubmited">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('noOfCompaniesWhoSubmited')">
+          <p class="column-header">{{ 'datatable.noOfCompaniesWhoSubmited' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('noOfCompaniesWhoSubmited')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.noOfCompaniesWhoSubmited == null">
+          -
+        </p>
+        <p *ngIf="row.noOfCompaniesWhoSubmited != null">
+          {{ row.noOfCompaniesWhoSubmited }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="publication-date-of-given-contract" prop="contract.publicationDateOfGivenContract">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('publicationDateOfGivenContract')">
+          <p class="column-header">{{ 'datatable.publicationDateOfGivenContract' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('publicationDateOfGivenContract')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.publicationDateOfGivenContract == null">
+          -
+        </p>
+        <p *ngIf="row.contract.publicationDateOfGivenContract != null">
+          {{ row.contract.publicationDateOfGivenContract | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="cancellation-notice-date" prop="cancellationNoticeDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('cancellationNoticeDate')">
+          <p class="column-header">{{ 'datatable.cancellationNoticeDate' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('cancellationNoticeDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.cancellationNoticeDate == null">
+          -
+        </p>
+        <p *ngIf="row.cancellationNoticeDate != null">
+          {{ row.cancellationNoticeDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="predicted-value" prop="contract.predictedValue">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('predictedValue')">
+          <p class="column-header">{{ 'datatable.predictedValue' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('predictedValue')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.predictedValue == ''">
+          -
+        </p>
+        <p *ngIf="row.contract.predictedValue != ''">
+          {{ row.contract.predictedValue }} &euro;
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="company-name" prop="company.name">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('companyName')">
+          <p class="column-header">{{ 'datatable.name' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('companyName')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.company.name == ''">
+          -
+        </p>
+        <p *ngIf="row.company.name != ''">
+          {{ row.company.name }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="signing-date" prop="contract.signingDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('signingDate')">
+          <p class="column-header">{{ 'datatable.signingDate' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('signingDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.signingDate == null">
+          -
+        </p>
+        <p *ngIf="row.contract.signingDate != null">
+          {{ row.contract.signingDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="implementation-deadline-starting-date" prop="contract.implementationDeadline">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('implementationDeadline')">
+          <p class="column-header">{{ 'datatable.implementationDeadline' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('implementationDeadline')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.implementationDeadline == null">
+          -
+        </p>
+        <p *ngIf="row.contract.implementationDeadline != null">
+          {{ row.contract.implementationDeadline }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="total-amount-of-contracts-including-taxes" prop="contract.totalAmountOfContractsIncludingTaxes">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('totalAmountOfContractsIncludingTaxes')">
+          <p class="column-header">{{ 'datatable.totalAmountOfContractsIncludingTaxes' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('totalAmountOfContractsIncludingTaxes')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.totalAmountOfContractsIncludingTaxes == ''">
+          -
+        </p>
+        <p *ngIf="row.contract.totalAmountOfContractsIncludingTaxes != ''">
+          {{ row.contract.totalAmountOfContractsIncludingTaxes }} &euro;
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="directorates" prop="directorates">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('directorates')">
+          <p class="column-header">{{ 'datatable.directorate' | translate }}</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('directorates')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.directorates == null || row.directorates == ''">
+          -
+        </p>
+        <p *ngIf="row.directorates != null">
+          {{ row.directorates }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column>
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <p class="column-header">Shiko kontratën e plotë</p>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span>
+          <div *ngIf="row.contract.file == ''">
+            <p>-</p>
+          </div>
+          <div *ngIf="row.contract.file != ''">
+            <a class="view-icon" [attr.data-id]="row._id" href="/uploads/{{row.contract.file}}" target="_blank">
+              <i class="fa fa-file-text-o" style="margin-top: 1.5px; font-size: 20px" aria-hidden="true"></i>
+            </a>
+          </div>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-footer>
+      <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
+        let-curPage="curPage" let-offset="offset">
+        <div style="padding: 5px 10px;width: 50%;">
+          Kontrata: {{rowCount}} | Të shfaqura: {{pageSize}} | Faqja: {{curPage}}
+        </div>
+        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+          [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+          (change)="table.onFooterPage($event)">
+        </datatable-pager>
+      </ng-template>
+    </ngx-datatable-footer>
+  </ngx-datatable>
+</div>

@@ -1,0 +1,355 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12 search text-center contracts-filter-form">
+      <form action="" class="form-inline form-group">
+        <input type="text" (keyup)="onType()" [(ngModel)]="search.string" name="string" class="form-control form-input" placeholder="Kërkoni kontratën">
+        <select class="form-control form-select" (change)="onChange()" [(ngModel)]="search.directorate" name="directorate">
+            <option value="">Të gjitha</option>
+            <option *ngFor="let directorate of directorates" value="{{directorate.directorateName}}"> {{directorate.directorateName}}</option>
+          </select>
+          <input (input)="onDateInputChange($event)" (ngModelChange)="onDatePick($event)" bsDatepicker placeholder="MM/DD/YYYY" [bsConfig]="bsConfig" name="date" id="date"
+          class="form-control form-select" [(ngModel)]="search.date">
+        <input type="text" (keyup)="onType()" [(ngModel)]="search.value" name="value" class="form-control form-input" placeholder="Vlera">
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="table">
+  <ngx-datatable #table class="bootstrap" columnMode="'force'" [rows]="rows" [headerHeight]="'auto'" [summaryRow]="false" [summaryPosition]="'bottom'"
+    [footerHeight]="50" [rowHeight]="'auto'" [externalPaging]="true" [count]="page.totalElements" [offset]="page.pageNumber"
+    [limit]="page.size" [messages]="messages" [scrollbarH]="true" (page)='setPage($event)' [externalSorting]="true" (scroll)="onTableScroll($event)">
+    <ngx-datatable-column [width]="80">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <p class="column-header">Statusi</p>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span *ngIf="row.flagStatus == null || row.flagStatus == '1'">
+          <a class="status-icon">
+            <i class="fa fa-circle contract-status-pending-icon" aria-hidden="true"></i>
+          </a>
+        </span>
+        <span *ngIf="row.flagStatus == '2'">
+          <a class="status-icon">
+            <i class="fa fa-circle contract-status-successful-icon" aria-hidden="true"></i>
+          </a>
+        </span>
+        <span *ngIf="row.flagStatus == '3'">
+          <a class="status-icon">
+            <i class="fa fa-circle contract-status-failed-icon" aria-hidden="true"></i>
+          </a>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column [width]="80">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <p class="column-header">Shiko</p>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span>
+          <a class="view-icon" [attr.data-id]="row._id" [routerLink]="['/dashboard/contracts', row._id]">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column *ngIf="currentUser.role == 'superadmin' || currentUser.role == 'admin'" [width]="100">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <p class="column-header">Ndrysho</p>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span>
+          <a class="edit-icon" [attr.data-id]="row._id" [routerLink]="['/dashboard/contracts/edit-contract', row._id]">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </a>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column *ngIf="currentUser.role == 'superadmin' || currentUser.role == 'admin'" [width]="70">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <p class="column-header">Fshij</p>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span>
+          <a class="delete-icon" (click)="deleteModal(modalDeleteContract, $event)" [attr.data-id]="row._id">
+            <i class="fa fa-trash" aria-hidden="true" [attr.data-id]="row._id"></i>
+          </a>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="activity-title" prop="activityTitle">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('activityTitle1')">
+          <p class="column-header">Titulli i aktivitetit të prokurimit</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('activityTitle1')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.activityTitle == ''">
+          -
+        </p>
+        <p *ngIf="row.activityTitle != ''">
+          {{ row.activityTitle }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="publication-date" prop="contract.publicationDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('publicationDate')">
+          <p class="column-header">Data e publikimit të njoftimit për kontratë</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('publicationDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.publicationDate == null">
+          -
+        </p>
+        <p *ngIf="row.contract.publicationDate != null">
+          {{ row.contract.publicationDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="number-of-companies" prop="noOfCompaniesWhoDownloadedTenderDoc">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('noOfCompaniesWhoDownloadedTenderDoc')">
+          <p class="column-header">Nr. i OE që kanë shkarkuar dosjen e tenderit</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('noOfCompaniesWhoDownloadedTenderDoc')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.noOfCompaniesWhoDownloadedTenderDoc == null">
+          -
+        </p>
+        <p *ngIf="row.noOfCompaniesWhoDownloadedTenderDoc != null">
+          {{ row.noOfCompaniesWhoDownloadedTenderDoc }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="no-of-companies-who-submited" prop="noOfCompaniesWhoSubmited">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('noOfCompaniesWhoSubmited')">
+          <p class="column-header">Numri i OE që kanë dorëzuar ofertat</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('noOfCompaniesWhoSubmited')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.noOfCompaniesWhoSubmited == null">
+          -
+        </p>
+        <p *ngIf="row.noOfCompaniesWhoSubmited != null">
+          {{ row.noOfCompaniesWhoSubmited }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="publication-date-of-given-contract" prop="contract.publicationDateOfGivenContract">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('publicationDateOfGivenContract')">
+          <p class="column-header">Data e publikimit të njoftimit për dhënie të kontratës</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('publicationDateOfGivenContract')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.publicationDateOfGivenContract == null">
+          -
+        </p>
+        <p *ngIf="row.contract.publicationDateOfGivenContract != null">
+          {{ row.contract.publicationDateOfGivenContract | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="cancellation-notice-date" prop="cancellationNoticeDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('cancellationNoticeDate')">
+          <p class="column-header">Data e publikimit të anulimit të njoftimit</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('cancellationNoticeDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.cancellationNoticeDate == null">
+          -
+        </p>
+        <p *ngIf="row.cancellationNoticeDate != null">
+          {{ row.cancellationNoticeDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="predicted-value" prop="contract.predictedValue">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('predictedValue')">
+          <p class="column-header">Vlera e parashikuar e kontratës</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('predictedValue')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.predictedValue == ''">
+          -
+        </p>
+        <p *ngIf="row.contract.predictedValue != ''">
+          {{ row.contract.predictedValue }} &euro;
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="company-name" prop="company.name">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('companyName')">
+          <p class="column-header">Emri i OE të cilit i është dhënë kontrata</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('companyName')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.company.name == ''">
+          -
+        </p>
+        <p *ngIf="row.company.name != ''">
+          {{ row.company.name }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="signing-date" prop="contract.signingDate">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('signingDate')">
+          <p class="column-header">Data e nënshkrimit të kontratës</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('signingDate')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.signingDate == null">
+          -
+        </p>
+        <p *ngIf="row.contract.signingDate != null">
+          {{ row.contract.signingDate | date: 'dd/MM/yyyy' }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="implementation-deadline-starting-date" prop="contract.implementationDeadline">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('implementationDeadline')">
+          <p class="column-header">Afatet për implementimin e kontratës</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('implementationDeadline')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.implementationDeadline == ''">
+          -
+        </p>
+        <p *ngIf="row.contract.implementationDeadline != null">
+          {{ row.contract.implementationDeadline }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="total-amount-of-contracts-including-taxes" prop="contract.totalAmountOfContractsIncludingTaxes">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <span (click)="sortContracts('totalAmountOfContractsIncludingTaxes')">
+          <p class="column-header">Vlera totale e kontratës, duke përfshirë të gjitha taksat</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('totalAmountOfContractsIncludingTaxes')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.contract.totalAmountOfContractsIncludingTaxes == ''">
+          -
+        </p>
+        <p *ngIf="row.contract.totalAmountOfContractsIncludingTaxes != ''">
+          {{ row.contract.totalAmountOfContractsIncludingTaxes }} &euro;
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="directorates" prop="directorates">
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span (click)="sortContracts('directorates')">
+          <p class="column-header">Drejtoria</p>
+        </span>
+        <div class="sort-icons">
+          <span id="sort" (click)="sortContracts('directorates')">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <p *ngIf="row.directorates == null || row.directorates == ''">
+          -
+        </p>
+        <p *ngIf="row.directorates != null">
+          {{ row.directorates }}
+        </p>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-footer>
+      <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
+        let-curPage="curPage" let-offset="offset">
+        <div style="padding: 5px 10px;width: 50%;">
+          Kontrata: {{rowCount}} | Të shfaqura: {{pageSize}} | Faqja: {{curPage}}
+        </div>
+        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+          [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+          (change)="table.onFooterPage($event)">
+        </datatable-pager>
+      </ng-template>
+    </ngx-datatable-footer>
+  </ngx-datatable>
+</div>
+
+<!-- Modal for deleting a contract -->
+<ng-template #modalDeleteContract>
+  <div id="delete-contract-modal">
+    <div class="modal-header delete-modal-header">
+      <h4 class="modal-title">Fshi kontratën</h4>
+      <button type="button" class="close" (click)="modalRef.hide()" aria-hidden="true">&times;</button>
+    </div>
+    <form action="" id="delete-user-form">
+      <div class="modal-body">
+        <div class="modal-body">
+          <p>A jeni i sigurt që dëshironi të fshini kontratën?</p>
+        </div>
+      </div>
+      <div class="modal-footer my-modal-footer">
+        <button type="button" class="btn btn-info" (click)="modalRef.hide()">Anuloje</button>
+        <button type="button" class="btn btn-danger delete-btn" id="deactivate-button" [attr.data-id]="contract._id" (click)="deleteContract($event)">Fshij</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- /Modal for deleting a contract -->

@@ -1,0 +1,174 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Cover image-->
+<div class="homePage">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 cover-col">
+        <div id="bg-img" class="cover">
+          <div class="info-text">
+            <h1 class="title">{{ 'coverImg.title' | translate }}</h1>
+            <h4 class="subtitle">- {{ 'coverImg.municipality' | translate }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- / Cover image -->
+  <div class="col-md-12">
+    <app-main-page-contracts-list></app-main-page-contracts-list>
+  </div>
+
+  <div class="row">
+    <div id="data-set"></div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <!-- /Public contracts -->
+  <div class="row"></div>
+  <div>
+    <div class="container-fluid data-set" id="cover-image" (mouseenter)="mouseOver()" (mouseleave)="mouseLeave()">
+      <div class="row">
+        <div class="col-md-12 data-set-title">
+          <h1 class="title text-center">{{ 'dataset.title' | translate }}</h1>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+          <div class="data-set-form">
+            <form action="" id="download-data-set" novalidate #downloadForm="ngForm" class="form-inline form-group" (submit)="downloadDataSet(downloadForm.valid)">
+              <select name="" id="data" name="data" class="form-control form-select" [(ngModel)]="data" #dataSet="ngModel" required [style.border-color]="dataSet.errors?.required && downloadForm.submitted ? 'red' : '#ced4da'">
+                <option [value]="undefined" disabled>{{ 'dataset.year' | translate }}</option>
+                <option *ngFor="let dataSet of dataSets" [value]="dataSet.datasetFilePath">{{ dataSet.datasetFilePath.replace('.csv', '') }}</option>
+              </select>
+              <div class="col-6 validation-text" [hidden]="!dataSet.errors?.required || !downloadForm.submitted">
+                <small class="text-danger">{{ 'dataset.yearValidation' | translate }}</small>
+              </div>
+              <select name="" id="format" name="format" class="form-control form-select" [(ngModel)]="format" #formatDS="ngModel" required
+                [style.border-color]="formatDS.errors?.required && downloadForm.submitted
+              ? 'red' : '#ced4da'">
+                <option [value]="undefined" disabled>{{ 'dataset.format' | translate }}</option>
+                <option value="csv">CSV</option>
+                <option value="json">JSON</option>
+              </select>
+              <div class="col-6 validation-text" id="format-text" [hidden]="!formatDS.errors?.required || !downloadForm.submitted">
+                <small id="format-validation" class="text-danger">{{ 'dataset.formatValidation' | translate }}</small>
+              </div>
+              <button value="submit" class="btn btn-primary form-button">
+                {{ 'dataset.download' | translate }}
+                <i class="fa fa-download" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contracts Announcement page -->
+  <div class="container-fluid contracts-announcement">
+    <div id="bg-img-contracts">
+      <div class="row" style="width:100%">
+        <div class="col-md-12">
+          <h1 class="text-center title">{{ 'announcements.title' | translate }}</h1>
+        </div>
+      </div>
+      <div class="row col-md-12 announcements-buttons">
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/planet-dhe-raportet-e-prokurimit" target="_blank">
+            <img src="/assets/images/planet_prokurimit .png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-1">
+            <a href="http://prishtinaonline.com/prokurimi/planet-dhe-raportet-e-prokurimit" target="_blank">
+              {{ 'announcements.procurementPlans' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-kontrate" target="_blank">
+            <img src="/assets/images/njoftimet-per-kontrata.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-2">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-kontrate" target="_blank">
+              {{ 'announcements.contractNotice' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-dhenjen-e-kontrates" target="_blank">
+            <img src="/assets/images/njoftimet-per-dhenje-te-kontratave.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-3">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-dhenjen-e-kontrates" target="_blank">
+              {{ 'announcements.contractAwardNotification' | translate }}
+            </a>
+          </h1>
+        </div>
+      </div>
+      <div class="row col-md-12 announcements-buttons">
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-anulim" target="_blank">
+            <img src="/assets/images/njoftimet-per-anulim.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-4">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-anulim" target="_blank">
+              {{ 'announcements.cancellationNotice' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-informata-shtese" target="_blank">
+            <img src="/assets/images/njoftimet-per-informata-shtese.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-5">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-informata-shtese" target="_blank">
+              {{ 'announcements.additionalInfosNotification' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4">
+          <a href="http://prishtinaonline.com/prokurimi/anulim-i-dhenies-se-kontrates" target="_blank">
+            <img src="/assets/images/anulimet-e-dhenjes-se-kontratave.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-6">
+            <a href="http://prishtinaonline.com/prokurimi/anulim-i-dhenies-se-kontrates" target="_blank">
+              {{ 'announcements.contractCancellationAward' | translate }}
+            </a>
+          </h1>
+        </div>
+      </div>
+      <div class="row col-md-12 announcements-buttons">
+        <div class="col-md-4" id="signing-contract-annonuncments">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-nenshkrimin-e-kontrates" target="_blank">
+            <img src="/assets/images/njoftimet-per-nenshkrim-te-kontratave.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-7">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-nenshkrimin-e-kontrates" target="_blank">
+              {{ 'announcements.contractSigningNotification' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4" id="design-award-notification">
+          <a href="http://prishtinaonline.com/prokurimi/njoftim-per-konkurs-te-projektimit" target="_blank">
+            <img src="/assets/images/njoftimet_konkurs.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-8">
+            <a href="http://prishtinaonline.com/prokurimi/njoftim-per-konkurs-te-projektimit" target="_blank">
+              {{ 'announcements.designAwardNotification' | translate }}
+            </a>
+          </h1>
+        </div>
+        <div class="col-md-4" id="design-award-notification">
+          <a href="http://prishtinaonline.com/prokurimi/njoftimi-paraprak" target="_blank">
+            <img src="/assets/images/njoftim_paraprak.png" class="img-fluid">
+          </a>
+          <h1 id="announcements-title-8">
+            <a href="http://prishtinaonline.com/prokurimi/njoftimi-paraprak" target="_blank">
+              {{ 'announcements.priorNotification' | translate }}
+            </a>
+          </h1>
+        </div>
+      </div>
+    </div>

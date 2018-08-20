@@ -1,0 +1,58 @@
+<div class="col-md-6">
+  <a style="float:left" class="btn btn-outline-primary buttons" id="contracts-buttons" [routerLink]="['']">
+    <i class="fa fa-home" aria-hidden="true"></i> Kthehu në ballinë</a>
+</div>
+<div class="container col-md-12 login-box vertical-middle-align">
+  <form class="form-control" id="login-form" novalidate #loginForm="ngForm" (submit)="onLoginSubmit($event, loginForm.valid)">
+    <div class="login-header">
+      <h4>Kyçu</h4>
+    </div>
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="email" #loginEmail="ngModel"
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required [style.border-color]="(loginEmail.errors?.required || loginEmail.errors?.pattern) && (loginEmail.touched || loginForm.submitted) ? 'red' : '#ced4da'">
+    <div [hidden]="(!loginEmail.errors?.required && !loginEmail.errors?.pattern) || (!loginEmail.touched && !loginForm.submitted)">
+      <small class="text-danger">Email duhet plotësuar dhe duhet të jetë valid!</small>
+    </div>
+    <label for="password">Fjalëkalimi</label>
+    <input type="password" class="form-control" id="password" name="password" placeholder="Fjalëkalimi" [(ngModel)]="password"
+      #loginPassword="ngModel" required [style.border-color]="loginPassword.errors?.required && (loginPassword.touched || loginForm.submitted) ? 'red' : '#ced4da'">
+    <div [hidden]="!loginPassword.errors?.required || (!loginPassword.touched && !loginForm.submitted)">
+      <small class="text-danger">Fjalëkalimi duhet plotësuar!</small>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary" id="login-button">Kyçu</button>
+
+    <div class="password-link">
+      <a data-toggle="modal" (click)="openModal(modalforgotPassword)" id="password-changer">Keni harruar fjalëkalimin?</a>
+    </div>
+  </form>
+</div>
+<!-- Modal -->
+<ng-template #modalforgotPassword>
+  <div class="modal-content">
+    <form id="forgot-form" novalidate #forgotForm="ngForm" (submit)="requestRegerationForPassword($event,forgotForm.valid)">
+      <div class="modal-header">
+        <h5 class="modal-title">Rigjenerimi i fjalëkalimit</h5>
+        <button style="background-color: #39a6bd" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="forgotEmail" name="email" [(ngModel)]="forgotEmail" #userEmail="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            required [style.border-color]="userEmail.errors?.required && userEmail.touched ? 'red' : '#ced4da'" [style.border-color]="userEmail.errors?.pattern && userEmail.touched ? 'red' : '#ced4da'">
+          <div *ngIf="userEmail.errors?.required && userEmail.touched;else error_email" class="error-msg">Email duhet plotësuar!</div>
+          <ng-template #error_email>
+            <div *ngIf="userEmail.errors?.pattern && userEmail.touched" class="error-msg">Email duhet të jetë valid!</div>
+          </ng-template>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <input type="submit" value="Dërgo" class="btn btn-primary">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

@@ -1,0 +1,141 @@
+/* About Us Header Style */
+#bg-img {
+    background-image:url("/assets/images/about.jpg");
+    /* Full height */
+    height: 85%; 
+    max-height: 85%;
+    width: 100%;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.header {
+    margin-left:0;
+    margin-right:0;
+    width: 100%;
+    max-width: 100%;
+    height: 760px;
+}
+.company-header {
+   font-family: 'Roboto', sans-serif;
+   color:white;
+   margin-left: 5%;
+   margin-right: 5%;   
+   width: 94%;
+   max-width: 94%;
+   top: 27%;
+}
+.company-header #title {
+   width: auto;
+   margin-top: 5%; 
+   margin-bottom: 0;
+   font-weight: 600;
+   font-size: 3.5rem;
+   float: left;
+}
+
+/* About Project Style */
+#project-img {
+    margin-left: 52px;
+    margin-right: 0;
+    width: 81%;
+    max-width: 81%;
+ 
+}
+.project-header-title {
+    font-family: 'Roboto', sans-serif;
+}
+#project-title {
+    text-align: center;
+    color:#32a6bd;
+    margin-top: 50px;
+    margin-bottom: 33px;
+    font-weight: 600;
+}
+.project-details {
+    font-family: 'Roboto', sans-serif;
+    max-width: 100%;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+    padding-bottom: 7%;
+}
+#project-description {
+    white-space: pre-line;
+    text-align: justify;
+    color: #868e96 ;
+    width: 88%;
+    height: auto;
+    margin-bottom: 0;
+    bottom: 1px;
+    top: 56px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.company-description {
+    white-space: pre-line;
+    float: left;
+    font-family: 'Roboto', sans-serif;
+    color:white;
+    text-align: justify;
+}
+
+#descriptions {
+    margin-right: 85px;
+}
+#description1 {
+    width: 72%;
+}
+.technologies {
+    float: left;
+    width: 18%;
+    margin-right: 5%;
+    margin-top: 5%;
+}
+
+a {
+    color: #32a6bd;
+    text-decoration: none
+}
+
+@media(max-width: 767px) {
+    #project-img {
+        margin-left: 0;
+    }
+    #bg-img {
+        height: 800px; 
+        max-height: 800px;
+    }
+    #descriptions {
+        margin-right: 0px;
+    }
+    .company-description {
+        width: 100%;
+    }
+    #project-description {
+        width: 100%;
+    }
+    .justify-content-center {
+        margin-left: 9%;
+        margin-right: 9%;
+        margin-top: 5%;
+    }
+    .company-header #title {
+        font-size: 2.5em
+    }
+    #description1 {
+        width: 100%;
+    }
+}
+
+@media(max-width: 635px) {
+    .company-header {
+        margin-left: 2%;
+        margin-right: 0;
+    }
+    #bg-img {
+        height: 900px; 
+        max-height: 900px;
+    }
+}
